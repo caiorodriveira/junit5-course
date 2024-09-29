@@ -3,6 +3,7 @@ package br.sc.senai.domain;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static br.sc.senai.domain.builder.UsuarioBuilder.umUsuario;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,26 +13,26 @@ public class UsuarioTest {
 	
 	@Test
 	public void deveCriarUsuarioValido() {
-		Usuario usuario = new Usuario(1L, "Usuário Valido", "usuario@usuario.com",  "user123");
+		Usuario usuario = umUsuario().build();
 		assertAll("Usuario",  
 				() -> assertEquals(1l, usuario.getId()),
-				() -> assertEquals("Usuário Valido", usuario.getNome()),
+				() -> assertEquals("Usuário Válido", usuario.getNome()),
 				() -> assertEquals("usuario@usuario.com", usuario.getLogin()),
-				() -> assertEquals("user123", usuario.getSenha())
+				() -> assertEquals("user@123", usuario.getSenha())
 		);
 		
-	}	
+	}
 	
 	@Test
 	public void deveRejeitarNomeVazio() {
-		NotNullException ex = assertThrows(NotNullException.class, () -> new Usuario(1L, null, "email@email.com", "nome123"));
+		NotNullException ex = assertThrows(NotNullException.class, () -> umUsuario().comNome(null).build());
 		
 		assertEquals("Nome"+NotNullException.NOT_NULL_MESSAGE, ex.getMessage());
 	}
 	
 	@Test
 	public void deveRejeitarAlgumCampoVazio() {
-		assertThrows(NotNullException.class, () -> new Usuario(1L, "nome", "email@email.com", null));
+		assertThrows(NotNullException.class, () -> umUsuario().comLogin(null).build());
 	}
 
 }

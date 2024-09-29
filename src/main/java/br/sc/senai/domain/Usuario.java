@@ -19,6 +19,8 @@ public class Usuario {
 		this.login = login;
 		this.senha = senha;
 	}
+	
+	public Usuario() {}
 
 	public Long getId() {
 		return id;
