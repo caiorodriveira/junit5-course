@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 public class CalculadoraTest {
 	
-	Calculadora calc = new Calculadora();
+	Main calc = new Main();
 	//static pra poder manter o valor em todos os métodos
 	private static int contador = 0;
 	
@@ -44,7 +44,7 @@ public class CalculadoraTest {
 	
 	@Test
 	public void deveRetornarNumeroInteiroNaDivisao() {
-		Calculadora calc = new Calculadora();
+		Main calc = new Main();
 		float resultado = calc.dividir(6,2);
 		Assertions.assertEquals(3, resultado);
 	}

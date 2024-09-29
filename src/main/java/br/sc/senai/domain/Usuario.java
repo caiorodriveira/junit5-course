@@ -37,6 +37,25 @@ public class Usuario {
 	public String getSenha() {
 		return senha;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setNome(String nome) {
+		if(nome == null) throw new NotNullException("Nome");
+		this.nome = nome;
+	}
+
+	public void setLogin(String login) {
+		if(login == null) throw new NotNullException("Login");
+		this.login = login;
+	}
+
+	public void setSenha(String senha) {
+		if(senha == null) throw new NotNullException("Senha");
+		this.senha = senha;
+	}
 	
 	
 
