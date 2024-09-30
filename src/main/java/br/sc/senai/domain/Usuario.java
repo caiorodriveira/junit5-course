@@ -1,5 +1,7 @@
 package br.sc.senai.domain;
 
+import java.util.Objects;
+
 import br.sc.senai.exceptions.NotNullException;
 
 public class Usuario {
@@ -43,19 +45,38 @@ public class Usuario {
 	}
 
 	public void setNome(String nome) {
-		if(nome == null) throw new NotNullException("Nome");
+		if(nome == null) throw new NotNullException("Nome do usuário");
 		this.nome = nome;
 	}
 
 	public void setLogin(String login) {
-		if(login == null) throw new NotNullException("Login");
+		if(login == null) throw new NotNullException("Login do usuário");
 		this.login = login;
 	}
 
 	public void setSenha(String senha) {
-		if(senha == null) throw new NotNullException("Senha");
+		if(senha == null) throw new NotNullException("Senha do usuário");
 		this.senha = senha;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(login, nome, senha);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return Objects.equals(login, other.login) && Objects.equals(nome, other.nome)
+				&& Objects.equals(senha, other.senha);
+	}
+	
 	
 	
 

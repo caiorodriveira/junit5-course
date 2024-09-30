@@ -1,4 +1,5 @@
-import br.sc.senai.domain.Usuario;
+import br.sc.senai.domain.Conta;
+//import br.sc.senai.domain.Usuario;
 
 public class Main {
 
@@ -11,7 +12,7 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
-		new BuilderMaster().gerarCodigoClasse(Usuario.class);
+		new BuilderMaster().gerarCodigoClasse(Conta.class);
 	}
 	
 }

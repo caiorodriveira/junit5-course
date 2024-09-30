@@ -29,7 +29,7 @@ public class UsuarioTest {
 	public void deveRejeitarNomeVazio() {
 		NotNullException ex = assertThrows(NotNullException.class, () -> umUsuario().comNome(null).build());
 		
-		assertEquals("Nome"+NotNullException.NOT_NULL_MESSAGE, ex.getMessage());
+		assertEquals("Nome do usuário"+NotNullException.NOT_NULL_MESSAGE, ex.getMessage());
 	}
 	
 	@Test
@@ -45,9 +45,9 @@ public class UsuarioTest {
 	*/
 	@ParameterizedTest(name = "[{index}] - {4}")
 	@CsvSource(value = {
-			"1, NULL, usuario, u123, Nome não pode ser nulo",
-			"1, Nome usuário, NULL, u123, Login não pode ser nulo",
-			"1, Nome ususario, usuario, NULL, Senha não pode ser nulo"
+			"1, NULL, usuario, u123, Nome do usuário não pode ser nulo",
+			"1, Nome usuário, NULL, u123, Login do usuário não pode ser nulo",
+			"1, Nome ususario, usuario, NULL, Senha do usuário não pode ser nulo"
 	}, nullValues = "NULL")
 	public void deveValidarAlgumCampopVazio(Long id, String nome, String login, String senha, String mensagem) {
 		NotNullException ex = assertThrows(NotNullException.class, () -> umUsuario().comId(id).comLogin(login).comSenha(senha).comNome(nome).build());
