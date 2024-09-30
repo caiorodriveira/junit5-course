@@ -44,6 +44,13 @@ public class UsuarioBuilder {
 		return this;
 	}
 
+	public UsuarioBuilder comValoresNulos() {
+		comId(null);
+		comNome(null);
+		comLogin(null);
+		comSenha(null);
+		return this;
+	}
 	public Usuario build() {
 		return usuario;
 	}
