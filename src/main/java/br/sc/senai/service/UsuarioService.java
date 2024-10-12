@@ -1,5 +1,7 @@
 package br.sc.senai.service;
 
+import java.util.Optional;
+
 import br.sc.senai.domain.Usuario;
 import br.sc.senai.exceptions.AlreadyExistsException;
 import br.sc.senai.repository.UsuarioRepository;
@@ -19,5 +21,9 @@ public class UsuarioService {
 		});
 		
 		return usuarioRepository.salvar(usuario);
+	}
+	
+	public Optional<Usuario> getUsuarioByLogin(String login) {
+		return usuarioRepository.getUsuarioByLogin(login);
 	}
 }
