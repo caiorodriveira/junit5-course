@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -39,12 +40,14 @@ public class UsuarioServiceTest {
 		UsuarioRepository usuarioRepository = Mockito.mock(UsuarioRepository.class);
 		usuarioService = new UsuarioService(usuarioRepository);
 		
+		// duas vezes
 		when(usuarioRepository.getUsuarioByLogin("usuario@usuario.com"))
 		.thenReturn(Optional.of(umUsuario().build()));
 		
 		
 		//obedencendo regra acima -- onde é inciado a execução do teste
 		Optional<Usuario> usuario = usuarioService.getUsuarioByLogin("usuario@usuario.com");
+		usuario = usuarioService.getUsuarioByLogin("usuario@usuario.com");
 		assertTrue(usuario.isPresent());
 		
 		
@@ -55,11 +58,11 @@ public class UsuarioServiceTest {
 		 * atLeast(0) pelo menos 0 vezes
 		 * never() nunca ocorreu
 		*/
-		verify(usuarioRepository, times(1)).getUsuarioByLogin("usuario@usuario.com");
+		verify(usuarioRepository, times(2)).getUsuarioByLogin("usuario@usuario.com");
 		
 		/* verifica se não teve interação nenhuma no atributo definido 
 		 * isso depois de verificar se chamou, se comentar a verify de cima dara erro pq ele foi chamado
 		 */
-		verifyNoInteractions(usuarioRepository);
+		verifyNoMoreInteractions(usuarioRepository);
 	}
 }
