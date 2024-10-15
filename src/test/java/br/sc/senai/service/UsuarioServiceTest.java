@@ -1,10 +1,10 @@
 package br.sc.senai.service;
 
 import static br.sc.senai.domain.builder.UsuarioBuilder.umUsuario;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
@@ -64,5 +64,34 @@ public class UsuarioServiceTest {
 		 * isso depois de verificar se chamou, se comentar a verify de cima dara erro pq ele foi chamado
 		 */
 		verifyNoMoreInteractions(usuarioRepository);
+		
+		
 	}
+	
+	@Test
+	public void deveSalvarUsuarioComSucesso() {
+		UsuarioRepository usuarioRepository = Mockito.mock(UsuarioRepository.class);
+		usuarioService = new UsuarioService(usuarioRepository);
+		
+		Usuario usuarioToSave = umUsuario().comId(null).build();
+		
+		//PRIMEIRO DEFINIR O QUE O MOCK DEVE FAZER QUANDO OS MÉTODOS SÃO CHAMADOS
+		
+		//desnecessário pois o padrão/correto é que retorne null
+//		when(usuarioRepository.getUsuarioByLogin(usuarioToSave.getLogin()))
+//				.thenReturn(Optional.empty());
+		when(usuarioRepository.salvar(usuarioToSave)).thenReturn(umUsuario().build());
+		
+		
+		// DEPOIS REALIZAR AS CHAMADAS DOS MÉTODOS (SIMULAR SALVAR)
+		Usuario savedUsuario = usuarioService.salvar(usuarioToSave);
+		assertNotNull(savedUsuario.getId());
+		
+		//nesse caso necessário pois esse método de verificação é chamado dentro de salvar
+		verify(usuarioRepository).getUsuarioByLogin(usuarioToSave.getLogin());
+		// não precisaria pois ja estou fazendo uma assertiva (not null)
+//		verify(usuarioRepository).salvar(usuarioToSave);
+		
+	}
+	
 }

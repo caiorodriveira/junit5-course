@@ -8,6 +8,6 @@ public interface UsuarioRepository {
 	
 	Usuario salvar(Usuario usuario);
 	
-	Optional<Usuario> getUsuarioByLogin(String email);
+	Optional<Usuario> getUsuarioByLogin(String login);
 
 }
