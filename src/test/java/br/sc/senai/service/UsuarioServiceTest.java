@@ -10,25 +10,34 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import br.sc.senai.domain.Usuario;
 import br.sc.senai.repository.UsuarioRepository;
 
 public class UsuarioServiceTest {
+	
+	@Mock
+	private UsuarioRepository usuarioRepository;
+	@InjectMocks
 	private UsuarioService usuarioService;
 	
+	@BeforeEach
+	public void initMocks() {
+		MockitoAnnotations.openMocks(this);
+	}
+	
 	@Test
-	public void deveRetornarEmptyQuandoUsuarioInexistente() {
-		UsuarioRepository usuarioRepository = Mockito.mock(UsuarioRepository.class);
-		usuarioService = new UsuarioService(usuarioRepository);
-		
+	public void deveRetornarEmptyQuandoUsuarioInexistente() {		
 		/*
 		 * quando chamar o método dentro do when (getUsuarioByLogin) retorne vazio
 		 * Nesse caso é redundante pq a classe ja retorna um empty por padrão
 		 */
-		Mockito.when(usuarioRepository.getUsuarioByLogin("vazio@vazio.com")).thenReturn(Optional.empty());
+		when(usuarioRepository.getUsuarioByLogin("vazio@vazio.com")).thenReturn(Optional.empty());
 		
 		//obedencendo regra acima
 		Optional<Usuario> usuario = usuarioService.getUsuarioByLogin("teste@teste.com");
@@ -37,19 +46,13 @@ public class UsuarioServiceTest {
 	
 	@Test
 	public void deveRetornarUsuarioPorEmail() {
-		UsuarioRepository usuarioRepository = Mockito.mock(UsuarioRepository.class);
-		usuarioService = new UsuarioService(usuarioRepository);
-		
-		// duas vezes
 		when(usuarioRepository.getUsuarioByLogin("usuario@usuario.com"))
 		.thenReturn(Optional.of(umUsuario().build()));
-		
 		
 		//obedencendo regra acima -- onde é inciado a execução do teste
 		Optional<Usuario> usuario = usuarioService.getUsuarioByLogin("usuario@usuario.com");
 		usuario = usuarioService.getUsuarioByLogin("usuario@usuario.com");
 		assertTrue(usuario.isPresent());
-		
 		
 		//verifica se o método foi chamado com esses parametros e 1 vez
 		/*
@@ -60,7 +63,7 @@ public class UsuarioServiceTest {
 		*/
 		verify(usuarioRepository, times(2)).getUsuarioByLogin("usuario@usuario.com");
 		
-		/* verifica se não teve interação nenhuma no atributo definido 
+		/* verifica se não teve verificação nenhuma no atributo definido 
 		 * isso depois de verificar se chamou, se comentar a verify de cima dara erro pq ele foi chamado
 		 */
 		verifyNoMoreInteractions(usuarioRepository);
@@ -70,9 +73,6 @@ public class UsuarioServiceTest {
 	
 	@Test
 	public void deveSalvarUsuarioComSucesso() {
-		UsuarioRepository usuarioRepository = Mockito.mock(UsuarioRepository.class);
-		usuarioService = new UsuarioService(usuarioRepository);
-		
 		Usuario usuarioToSave = umUsuario().comId(null).build();
 		
 		//PRIMEIRO DEFINIR O QUE O MOCK DEVE FAZER QUANDO OS MÉTODOS SÃO CHAMADOS
