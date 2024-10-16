@@ -10,10 +10,6 @@ public class UsuarioService {
 	
 	
 	private UsuarioRepository usuarioRepository;
-
-	public UsuarioService(UsuarioRepository usuarioRepository) {
-		this.usuarioRepository = usuarioRepository;
-	}
 	
 	public Usuario salvar(Usuario usuario) {
 		usuarioRepository.getUsuarioByLogin(usuario.getLogin()).ifPresent(u -> {
@@ -25,5 +21,9 @@ public class UsuarioService {
 	
 	public Optional<Usuario> getUsuarioByLogin(String login) {
 		return usuarioRepository.getUsuarioByLogin(login);
+	}
+	
+	public Optional<Usuario> getUsuarioById(Long id) {
+		return usuarioRepository.getUsuarioById(id);
 	}
 }

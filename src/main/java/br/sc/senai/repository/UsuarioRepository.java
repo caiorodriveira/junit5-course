@@ -9,5 +9,7 @@ public interface UsuarioRepository {
 	Usuario salvar(Usuario usuario);
 	
 	Optional<Usuario> getUsuarioByLogin(String login);
+	
+	Optional<Usuario> getUsuarioById(Long id);
 
 }
