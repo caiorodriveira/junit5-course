@@ -3,7 +3,7 @@ package br.sc.senai.service;
 import java.util.Optional;
 
 import br.sc.senai.domain.Usuario;
-import br.sc.senai.exceptions.AlreadyExistsException;
+import br.sc.senai.exception.AlreadyExistsException;
 import br.sc.senai.repository.UsuarioRepository;
 
 public class UsuarioService {

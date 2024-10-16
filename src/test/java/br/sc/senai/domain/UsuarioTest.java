@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import br.sc.senai.exceptions.NotNullException;
+import br.sc.senai.exception.NotNullException;
 
 public class UsuarioTest {
 	

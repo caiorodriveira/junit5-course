@@ -1,4 +1,4 @@
-package br.sc.senai.exceptions;
+package br.sc.senai.exception;
 
 public class NotFoundException extends RuntimeException{
 

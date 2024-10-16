@@ -2,7 +2,7 @@ package br.sc.senai.domain;
 
 import java.util.Objects;
 
-import br.sc.senai.exceptions.NotNullException;
+import br.sc.senai.exception.NotNullException;
 
 public class Usuario {
 	private Long id;

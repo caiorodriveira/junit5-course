@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import br.sc.senai.domain.Usuario;
-import br.sc.senai.exceptions.AlreadyExistsException;
+import br.sc.senai.exception.AlreadyExistsException;
 import br.sc.senai.repository.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)

@@ -1,18 +1,22 @@
 package br.sc.senai.service;
 
 import br.sc.senai.domain.Conta;
-import br.sc.senai.exceptions.AlreadyExistsException;
-import br.sc.senai.exceptions.NotFoundException;
+import br.sc.senai.exception.AlreadyExistsException;
+import br.sc.senai.exception.NotFoundException;
+import br.sc.senai.external.ContaEvent;
+import br.sc.senai.external.ContaEvent.EventTyoe;
 import br.sc.senai.repository.ContaRepository;
 
 public class ContaService {
 
 	private ContaRepository contaRepository;
 	private UsuarioService usuarioService;
+	private ContaEvent contaEvent;
 	
-	public ContaService(ContaRepository contaRepository, UsuarioService usuarioService) {
+	public ContaService(ContaRepository contaRepository, UsuarioService usuarioService, ContaEvent contaEvent) {
 		this.contaRepository = contaRepository;
 		this.usuarioService = usuarioService;
+		this.contaEvent = contaEvent;
 	}
 
 	
@@ -25,7 +29,9 @@ public class ContaService {
 			throw new AlreadyExistsException(String.format("Conta com para o usuário %s esse nome %s", c.getUsuario().getNome(), c.getNome()));
 		});
 		
-		return contaRepository.salvar(conta);
+		Conta contaPersisted = contaRepository.salvar(conta);
+		contaEvent.dispatch(contaPersisted, EventTyoe.CREATED);
+		return contaPersisted;
 		
 	}
 }
