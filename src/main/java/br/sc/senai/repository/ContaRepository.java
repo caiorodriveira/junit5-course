@@ -15,4 +15,6 @@ public interface ContaRepository {
 	List<Conta> getContasByUsuario(Usuario usuario);
 	
 	Optional<Conta> getContaByUsuarioAndNome(Usuario usuario, String  nome);
+	
+	void deleteContaById(Long id);
 }

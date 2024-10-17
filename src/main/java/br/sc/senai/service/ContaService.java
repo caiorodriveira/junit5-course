@@ -30,7 +30,13 @@ public class ContaService {
 		});
 		
 		Conta contaPersisted = contaRepository.salvar(conta);
-		contaEvent.dispatch(contaPersisted, EventTyoe.CREATED);
+		try {
+			contaEvent.dispatch(contaPersisted, EventTyoe.CREATED);
+		} catch (Exception e) {
+			contaRepository.deleteContaById(contaPersisted.getId());
+			throw new RuntimeException("Erro ao salvar conta");
+		}
+		
 		return contaPersisted;
 		
 	}

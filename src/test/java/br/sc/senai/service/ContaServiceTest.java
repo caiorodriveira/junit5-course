@@ -1,10 +1,12 @@
 package br.sc.senai.service;
 
 import static br.sc.senai.domain.builder.ContaBuilder.umaConta;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,7 +39,7 @@ public class ContaServiceTest {
 	
 	
 	@Test
-	public void deveSalvarContaComSucesso() {
+	public void deveSalvarContaComSucesso() throws Exception{
 		Conta contaToSave = umaConta().comId(null).build();
 		
 		mockUsuarioExistente(contaToSave);
@@ -67,4 +69,23 @@ public class ContaServiceTest {
 		when(usuarioService.getUsuarioById(contaToSave.getUsuario().getId())).thenReturn(Optional.of(contaToSave.getUsuario()));
 	}
 	
+	@Test
+	public void naoDeveManterContaSemEvento() throws Exception{
+		Conta contaToSave = umaConta().comId(null).build();
+		Conta contaPersisted = umaConta().build();
+		
+		//definindo comportamentos (usuario existe, conta salva, disparar uma exception pra essa conta 
+		mockUsuarioExistente(contaToSave);
+		when(contaRepository.salvar(contaToSave)).thenReturn(contaPersisted);
+		//exceção para disparar o evento
+		doThrow(new Exception("Erro")).when(contaEvent).dispatch(contaPersisted, EventTyoe.CREATED);
+		
+		String message = assertThrows(Exception.class, () -> 
+				contaService.salvar(contaToSave)).getMessage();
+		
+		assertEquals("Erro ao salvar conta", message);
+		
+		verify(usuarioService).getUsuarioById(contaToSave.getUsuario().getId());
+		verify(contaRepository).deleteContaById(contaPersisted.getId());
+	}
 }
