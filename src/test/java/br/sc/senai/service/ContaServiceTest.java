@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
@@ -43,13 +44,19 @@ public class ContaServiceTest {
 		Conta contaToSave = umaConta().comId(null).build();
 		
 		mockUsuarioExistente(contaToSave);
-		when(contaRepository.salvar(contaToSave)).thenReturn(umaConta().build());
+		/*any não vai se importar com os dados que passar
+		 *ele não funcionara em alguma validação pois considerara como dados null
+		 *recomenda-se utilizar quando vai mockar algum comportamento
+		 *no exemplo ele tenta comparar o nome do build com o timestamp setado no service (diferentes0
+		*/ 
+		when(contaRepository.salvar(any(Conta.class))).thenReturn(umaConta().build());
 		doNothing().when(contaEvent).dispatch(umaConta().build(), EventTyoe.CREATED);
 		
 		Conta contaSalva = contaService.salvar(contaToSave);
 		
 		assertNotNull(contaSalva.getId());
 		verify(usuarioService).getUsuarioById(contaToSave.getUsuario().getId());
+		
 	}
 	
 	@Test
@@ -76,8 +83,8 @@ public class ContaServiceTest {
 		
 		//definindo comportamentos (usuario existe, conta salva, disparar uma exception pra essa conta 
 		mockUsuarioExistente(contaToSave);
-		when(contaRepository.salvar(contaToSave)).thenReturn(contaPersisted);
-		//exceção para disparar o evento
+		when(contaRepository.salvar(any(Conta.class))).thenReturn(contaPersisted);
+		//compotamento para disparar a excecao (quando event é chamado)
 		doThrow(new Exception("Erro")).when(contaEvent).dispatch(contaPersisted, EventTyoe.CREATED);
 		
 		String message = assertThrows(Exception.class, () -> 

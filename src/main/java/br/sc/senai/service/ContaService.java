@@ -1,5 +1,7 @@
 package br.sc.senai.service;
 
+import java.time.LocalDateTime;
+
 import br.sc.senai.domain.Conta;
 import br.sc.senai.exception.AlreadyExistsException;
 import br.sc.senai.exception.NotFoundException;
@@ -29,7 +31,8 @@ public class ContaService {
 			throw new AlreadyExistsException(String.format("Conta com para o usuário %s esse nome %s", c.getUsuario().getNome(), c.getNome()));
 		});
 		
-		Conta contaPersisted = contaRepository.salvar(conta);
+		Conta contaPersisted = contaRepository.salvar(
+				new Conta(conta.getId(), conta.getNome() + LocalDateTime.now(), conta.getUsuario()));
 		try {
 			contaEvent.dispatch(contaPersisted, EventTyoe.CREATED);
 		} catch (Exception e) {
