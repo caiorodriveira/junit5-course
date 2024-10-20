@@ -16,6 +16,8 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -38,6 +40,9 @@ public class ContaServiceTest {
 	@InjectMocks
 	private ContaService contaService;
 	
+	@Captor
+	private ArgumentCaptor<Conta> contaCaptor;
+	
 	
 	@Test
 	public void deveSalvarContaComSucesso() throws Exception{
@@ -56,7 +61,9 @@ public class ContaServiceTest {
 		
 		assertNotNull(contaSalva.getId());
 		verify(usuarioService).getUsuarioById(contaToSave.getUsuario().getId());
-		
+		//Captor pega o valor depois de alterado pelo service
+		verify(contaRepository).salvar(contaCaptor.capture());
+		assertTrue(contaCaptor.getValue().getNome().startsWith("Conta Válida"));
 	}
 	
 	@Test
