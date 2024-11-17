@@ -26,6 +26,8 @@ import br.sc.senai.domain.Transacao;
 import br.sc.senai.exception.NotNullException;
 import br.sc.senai.repository.TransacaoDao;
 
+//Para alguma condição especifica, roda os testes unitário
+//@EnabledIf(value = "isHoraValida")
 @ExtendWith(MockitoExtension.class)
 public class TransacaoServiceTest {
 	@InjectMocks
