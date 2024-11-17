@@ -33,6 +33,9 @@ public class TransacaoServiceTest {
 	@Mock
 	private TransacaoDao transacaoDao;
 	
+	//dentro de um método assume a hopotese que nessa condição ele vai pular a execução do método
+	//Assemptions.assumeTrue(LocaDateTime.now().getHour() < 18);
+	
 	@Test
 	public void deveSalvarTransacaoValida() {
 		Transacao transacaoToSave = umaTransacao().comId(null).build();
